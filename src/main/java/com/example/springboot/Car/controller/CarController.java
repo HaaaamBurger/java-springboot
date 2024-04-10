@@ -17,7 +17,7 @@ import java.util.List;
 public class CarController {
     private final CarService carService;
 
-
+    @JsonView(View.PrivateAccess.class)
     @GetMapping("/cars")
     public ResponseEntity<List<CarDto>> getCars() {
         return this.carService.getCars();
@@ -27,6 +27,8 @@ public class CarController {
     public ResponseEntity<CarDto> createCar(@RequestBody CarEntity car) {
         return this.carService.createCar(car);
     }
+
+    @JsonView(View.PublicAccess.class)
     @GetMapping("/cars/{id}")
     public ResponseEntity<CarDto> getCarById(@PathVariable Long id) {
         return this.carService.getCarById(id);
@@ -37,14 +39,13 @@ public class CarController {
         return this.carService.removeCarById(id);
     }
 
-    @JsonView(View.Internal.class)
+    @JsonView(View.MediumAccess.class)
     @GetMapping("/cars/power/{power}")
     public ResponseEntity<List<CarDto>> getCarsByPower(@PathVariable Integer power) {
-        System.out.println(power);
         return this.carService.getCarsByPower(power);
     }
 
-    @JsonView(View.Internal.class)
+    @JsonView(View.MediumAccess.class)
     @GetMapping("/cars/producer/{producer}")
     public ResponseEntity<List<CarDto>> getCarsByProducer(@PathVariable String producer) {
         return this.carService.getCarsByProducer(producer);

@@ -7,15 +7,15 @@ import lombok.*;
 @Data
 @Builder
 public class CarDto {
-    @JsonView(View.External.class)
+    @JsonView(View.PublicAccess.class)
     private Long id;
 
-    @JsonView(View.Internal.class)
+    @JsonView({View.PublicAccess.class, View.MediumAccess.class, View.PrivateAccess.class})
     private String model;
 
-    @JsonView(View.Internal.class)
+    @JsonView({View.PublicAccess.class, View.MediumAccess.class, View.PrivateAccess.class})
     private String producer;
 
-    @JsonView(View.Internal.class)
+    @JsonView({View.PublicAccess.class, View.MediumAccess.class})
     private Integer power;
 }
