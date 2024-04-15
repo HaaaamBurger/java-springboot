@@ -1,7 +1,5 @@
-package com.example.springboot.Car.entity;
+package com.example.springboot.car.entity;
 
-import com.example.springboot.Car.utils.view.View;
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;

@@ -1,4 +1,4 @@
-package com.example.springboot.Car.utils.view;
+package com.example.springboot.car.utils.view;
 
 public class View {
     public static class PublicAccess{}

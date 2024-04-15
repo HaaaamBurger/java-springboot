@@ -1,6 +1,6 @@
-package com.example.springboot.Car.dto;
+package com.example.springboot.car.dto;
 
-import com.example.springboot.Car.utils.view.View;
+import com.example.springboot.car.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 

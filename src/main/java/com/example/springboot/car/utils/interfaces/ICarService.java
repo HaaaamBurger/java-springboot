@@ -1,7 +1,7 @@
-package com.example.springboot.Car.utils.interfaces;
+package com.example.springboot.car.utils.interfaces;
 
-import com.example.springboot.Car.dto.CarDto;
-import com.example.springboot.Car.entity.CarEntity;
+import com.example.springboot.car.dto.CarDto;
+import com.example.springboot.car.entity.CarEntity;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

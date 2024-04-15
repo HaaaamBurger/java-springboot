@@ -1,9 +1,7 @@
-package com.example.springboot.Car.repository;
+package com.example.springboot.car.repository;
 
-import com.example.springboot.Car.dto.CarDto;
-import com.example.springboot.Car.entity.CarEntity;
+import com.example.springboot.car.entity.CarEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

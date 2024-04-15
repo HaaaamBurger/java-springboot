@@ -1,15 +1,16 @@
-package com.example.springboot.Car.service;
+package com.example.springboot.car.service;
 
-import com.example.springboot.Car.dto.CarDto;
-import com.example.springboot.Car.entity.CarEntity;
-import com.example.springboot.Car.utils.interfaces.ICarService;
-import com.example.springboot.Car.repository.CarRepository;
-import com.example.springboot.Car.utils.mappers.CarMapper;
+import com.example.springboot.car.dto.CarDto;
+import com.example.springboot.car.entity.CarEntity;
+import com.example.springboot.car.utils.interfaces.ICarService;
+import com.example.springboot.car.repository.CarRepository;
+import com.example.springboot.car.utils.mappers.CarMapper;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import com.example.springboot.serviceeiml.EmailServiceImpl;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class CarService implements ICarService {
     private final CarRepository carRepository;
     private final CarMapper carMapper;
+    private final EmailServiceImpl emailServiceImpl;
 
     @Override
     public ResponseEntity<List<CarDto>> getCars() {
@@ -35,7 +37,12 @@ public class CarService implements ICarService {
 
     @Override
     public ResponseEntity<CarDto> createCar(CarEntity car) {
-        this.carRepository.save(car);
+        try {
+            this.carRepository.save(car);
+            this.emailServiceImpl.sendMailWithHTML("gemasclashes@gmail.com", "Hello World!!", "lorem ipsum");
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(this.carMapper.toDto(car));
     }

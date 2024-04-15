@@ -1,11 +1,10 @@
-package com.example.springboot.Car.controller;
+package com.example.springboot.car.controller;
 
-import com.example.springboot.Car.dto.CarDto;
-import com.example.springboot.Car.entity.CarEntity;
-import com.example.springboot.Car.service.CarService;
-import com.example.springboot.Car.utils.view.View;
+import com.example.springboot.car.dto.CarDto;
+import com.example.springboot.car.entity.CarEntity;
+import com.example.springboot.car.service.CarService;
+import com.example.springboot.car.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
