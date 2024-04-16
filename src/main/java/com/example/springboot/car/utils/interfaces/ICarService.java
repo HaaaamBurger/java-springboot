@@ -9,7 +9,7 @@ import java.util.List;
 public interface ICarService {
     ResponseEntity<List<CarDto>> getCars();
     ResponseEntity<CarDto> getCarById(Long id);
-    ResponseEntity<CarDto> createCar(CarEntity car);
+    ResponseEntity<CarDto> createCar(CarDto car);
     ResponseEntity<CarDto> removeCarById(Long id);
     ResponseEntity<List<CarDto>> getCarsByPower(Integer power);
     ResponseEntity<List<CarDto>> getCarsByProducer(String producer);

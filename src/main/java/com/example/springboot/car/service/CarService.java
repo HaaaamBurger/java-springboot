@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -41,11 +42,21 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public ResponseEntity<CarDto> createCar(CarEntity car) {
-        this.carRepository.save(car);
+    public ResponseEntity<CarDto> createCar(CarDto car) {
+
+        CarEntity mappedCar = carMapper.fromDto(car);
+        byte[] file = null;
+        try {
+            file = car.getImage().getBytes();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        mappedCar.setImage(file);
+
+        this.carRepository.save(mappedCar);
         this.emailService.sendMail("gemasclashes@gmail.com", "CarAPI", "Created new car " + car.getProducer() + ", " + car.getModel());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.carMapper.toDto(car));
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.carMapper.toDto(mappedCar));
     }
 
     @Override

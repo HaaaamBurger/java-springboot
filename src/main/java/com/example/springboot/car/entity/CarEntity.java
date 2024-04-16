@@ -24,4 +24,9 @@ public class CarEntity {
     @Min(value = 0, message = "Minimum power cannot be lower than 0!")
     @Column
     private Integer power;
+
+    @NotBlank(message = "Car image is required!")
+    @Column
+    private byte[] image;
+
 }
