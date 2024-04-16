@@ -5,13 +5,17 @@ import com.example.springboot.car.entity.CarEntity;
 import com.example.springboot.car.utils.interfaces.ICarService;
 import com.example.springboot.car.repository.CarRepository;
 import com.example.springboot.car.utils.mappers.CarMapper;
+import com.example.springboot.services.EmailService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import com.example.springboot.serviceeiml.EmailServiceImpl;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +24,8 @@ import java.util.Optional;
 public class CarService implements ICarService {
     private final CarRepository carRepository;
     private final CarMapper carMapper;
-    private final EmailServiceImpl emailServiceImpl;
+    private final EmailService emailService;
+    private final ObjectMapper objectMapper;
 
     @Override
     public ResponseEntity<List<CarDto>> getCars() {
@@ -37,12 +42,8 @@ public class CarService implements ICarService {
 
     @Override
     public ResponseEntity<CarDto> createCar(CarEntity car) {
-        try {
-            this.carRepository.save(car);
-            this.emailServiceImpl.sendMailWithHTML("gemasclashes@gmail.com", "Hello World!!", "lorem ipsum");
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
+        this.carRepository.save(car);
+        this.emailService.sendMail("gemasclashes@gmail.com", "CarAPI", "Created new car " + car.getProducer() + ", " + car.getModel());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(this.carMapper.toDto(car));
     }
@@ -51,6 +52,7 @@ public class CarService implements ICarService {
     public ResponseEntity<CarDto> removeCarById(Long id) {
         Optional<CarEntity> car = this.carRepository.findById(id);
         this.carRepository.delete(car.get());
+        this.emailService.sendMail("gemasclashes@gmail.com", "CarAPI", "Removed car " + car.get().getProducer() + ", " + car.get().getModel());
 
         return ResponseEntity.ok().body(this.carMapper.toDto(car.get()));
     }
@@ -73,5 +75,14 @@ public class CarService implements ICarService {
                 .map(this.carMapper::toDto)
                 .toList()
         );
+    }
+
+    public List<CarDto> getCarsFromJson(MultipartFile file) {
+        try {
+            return this.objectMapper.readValue(file.getBytes(), new TypeReference<>() {
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

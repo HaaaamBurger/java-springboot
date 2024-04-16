@@ -1,11 +1,13 @@
 package com.example.springboot.errors;
 
 import com.example.springboot.errors.dto.ErrorDto;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -29,6 +31,13 @@ public class ErrorHandler {
 
     @ExceptionHandler({SQLException.class})
     public ResponseEntity<ErrorDto> uniqueEntityErrorHandler(SQLException exception) {
+        return ResponseEntity
+                .internalServerError()
+                .body(getErrorDto(exception.getMessage()));
+    }
+
+    @ExceptionHandler({MismatchedInputException.class})
+    public ResponseEntity<ErrorDto> jsonMappingExceptionHandler(MismatchedInputException exception) {
         return ResponseEntity
                 .internalServerError()
                 .body(getErrorDto(exception.getMessage()));

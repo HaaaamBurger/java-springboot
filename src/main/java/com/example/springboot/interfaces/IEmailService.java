@@ -1,7 +1,7 @@
-package com.example.springboot.service;
+package com.example.springboot.interfaces;
 
 import jakarta.mail.MessagingException;
 
-public interface EmailService {
+public interface IEmailService {
     void sendMailWithHTML(String to, String subject, String description) throws MessagingException;
 }

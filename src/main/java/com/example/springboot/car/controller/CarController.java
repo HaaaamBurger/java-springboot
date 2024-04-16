@@ -5,10 +5,16 @@ import com.example.springboot.car.entity.CarEntity;
 import com.example.springboot.car.service.CarService;
 import com.example.springboot.car.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -48,6 +54,12 @@ public class CarController {
     @GetMapping("/cars/producer/{producer}")
     public ResponseEntity<List<CarDto>> getCarsByProducer(@PathVariable String producer) {
         return this.carService.getCarsByProducer(producer);
+    }
+
+    @PostMapping("/cars/upload")
+    public void createCarsByFile(@RequestParam("file") MultipartFile file) {
+        List<CarDto> carsFromJson = this.carService.getCarsFromJson(file);
+
     }
 
 }
