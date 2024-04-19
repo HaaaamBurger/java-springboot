@@ -29,9 +29,8 @@ public class CarController {
     }
 
     @PostMapping("/cars")
-    public ResponseEntity<CarDto> createCar(@RequestBody CarDto car, @RequestParam("file") MultipartFile file) {
-        car.setImage(file);
-        return this.carService.createCar(car);
+    public ResponseEntity<CarDto> createCar(@RequestBody CarDto car, @RequestParam("image") MultipartFile image) {
+        return this.carService.createCar(car, image);
     }
 
     @JsonView(View.PublicAccess.class)
@@ -60,7 +59,11 @@ public class CarController {
     @PostMapping("/cars/upload")
     public void createCarsByFile(@RequestParam("file") MultipartFile file) {
         List<CarDto> carsFromJson = this.carService.getCarsFromJson(file);
-
     }
+
+//    @PostMapping("/cars/upload/${id}")
+//    public ResponseEntity<CarDto> uploadCarImageById(@RequestParam MultipartFile image, Long carId) {
+//        return this.carService.uploadCarImageById(image, carId);
+//    }
 
 }

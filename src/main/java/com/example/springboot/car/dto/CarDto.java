@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 public class CarDto {
     @JsonView(View.PublicAccess.class)
-    private Long id;
+    private Long carId;
 
     @JsonView({View.PublicAccess.class, View.MediumAccess.class, View.PrivateAccess.class})
     private String model;
@@ -21,5 +21,5 @@ public class CarDto {
     private Integer power;
 
     @JsonView({View.PublicAccess.class, View.MediumAccess.class})
-    private MultipartFile image;
+    private byte[] image;
 }

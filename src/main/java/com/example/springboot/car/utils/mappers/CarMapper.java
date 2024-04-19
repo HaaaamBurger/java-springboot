@@ -9,7 +9,7 @@ public class CarMapper {
     public CarDto toDto(CarEntity car) {
         return CarDto
                 .builder()
-                .id(car.getId())
+                .carId(car.getCarId())
                 .model(car.getModel())
                 .producer(car.getProducer())
                 .power(car.getPower())
@@ -18,7 +18,8 @@ public class CarMapper {
 
     public CarEntity fromDto(CarDto carDto) {
         CarEntity car = new CarEntity();
-        car.setId(carDto.getId());
+        car.setCarId(carDto.getCarId());
+        car.setPower(carDto.getPower());
         car.setModel(carDto.getModel());
         car.setProducer(carDto.getProducer());
 

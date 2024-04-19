@@ -1,5 +1,6 @@
 package com.example.springboot.car.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -11,7 +12,7 @@ import lombok.*;
 public class CarEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private Long carId;
 
     @NotBlank(message = "Model field cannot be empty!")
     @Column(unique = true)
@@ -25,7 +26,7 @@ public class CarEntity {
     @Column
     private Integer power;
 
-    @NotBlank(message = "Car image is required!")
+    @Nullable
     @Column
     private byte[] image;
 
