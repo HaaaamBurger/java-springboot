@@ -1,7 +1,8 @@
 package com.example.springboot.interfaces;
 
 import jakarta.mail.MessagingException;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface IEmailService {
-    void sendMailWithHTML(String to, String subject, String description) throws MessagingException;
+    void sendEmailWithAttachments(String to, String subject, String text, byte[] attachment);
 }

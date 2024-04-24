@@ -7,6 +7,7 @@ import com.example.springboot.car.utils.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +30,8 @@ public class CarController {
     }
 
     @PostMapping("/cars")
-    public ResponseEntity<CarDto> createCar(@RequestBody CarDto car, @RequestParam("image") MultipartFile image) {
-        return this.carService.createCar(car, image);
+    public ResponseEntity<CarDto> createCar(@RequestBody CarDto car) {
+        return this.carService.createCar(car);
     }
 
     @JsonView(View.PublicAccess.class)
@@ -56,14 +57,9 @@ public class CarController {
         return this.carService.getCarsByProducer(producer);
     }
 
-    @PostMapping("/cars/upload")
-    public void createCarsByFile(@RequestParam("file") MultipartFile file) {
-        List<CarDto> carsFromJson = this.carService.getCarsFromJson(file);
+    @PutMapping("/cars/upload/{id}")
+    public ResponseEntity<CarDto> uploadImageToCarById(@PathVariable("id") Long carId, @RequestParam("file") MultipartFile image) {
+        return this.carService.uploadImageToCarById(carId, image);
     }
-
-//    @PostMapping("/cars/upload/${id}")
-//    public ResponseEntity<CarDto> uploadCarImageById(@RequestParam MultipartFile image, Long carId) {
-//        return this.carService.uploadCarImageById(image, carId);
-//    }
 
 }

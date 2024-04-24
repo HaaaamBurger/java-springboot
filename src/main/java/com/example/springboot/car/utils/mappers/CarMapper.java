@@ -13,14 +13,15 @@ public class CarMapper {
                 .model(car.getModel())
                 .producer(car.getProducer())
                 .power(car.getPower())
+                .image(car.getImage())
                 .build();
     }
 
     public CarEntity fromDto(CarDto carDto) {
         CarEntity car = new CarEntity();
-        car.setCarId(carDto.getCarId());
         car.setPower(carDto.getPower());
         car.setModel(carDto.getModel());
+        car.setImage(carDto.getImage());
         car.setProducer(carDto.getProducer());
 
         return car;

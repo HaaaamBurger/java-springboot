@@ -6,11 +6,8 @@ import com.example.springboot.car.utils.interfaces.ICarService;
 import com.example.springboot.car.repository.CarRepository;
 import com.example.springboot.car.utils.mappers.CarMapper;
 import com.example.springboot.services.EmailService;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -42,19 +39,11 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public ResponseEntity<CarDto> createCar(CarDto car, MultipartFile image) {
-        CarEntity carEntity = null;
-        try {
-            car.setImage(image.getBytes());
-            carEntity = this.carMapper.fromDto(car);
+    public ResponseEntity<CarDto> createCar(CarDto car) {
+        CarEntity createdCar = this.carRepository.save(this.carMapper.fromDto(car));
+//        this.emailService.sendMail("gemasclashes@gmail.com", "CarAPI", "Created new car " + car.getProducer() + ", " + car.getModel());
 
-            this.carRepository.save(carEntity);
-            this.emailService.sendMail("gemasclashes@gmail.com", "CarAPI", "Created new car " + car.getProducer() + ", " + car.getModel());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.carMapper.toDto(carEntity));
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.carMapper.toDto(createdCar));
     }
 
     @Override
@@ -86,27 +75,22 @@ public class CarService implements ICarService {
         );
     }
 
-    public List<CarDto> getCarsFromJson(MultipartFile file) {
+    public ResponseEntity<CarDto> uploadImageToCarById(Long carId, MultipartFile image) {
+        Optional<CarEntity> carById = this.carRepository.findById(carId);
+
+        if (carById.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         try {
-            return this.objectMapper.readValue(file.getBytes(), new TypeReference<>() {
-            });
+            CarEntity car = carById.get();
+            car.setImage(image.getBytes());
+            CarEntity updatedCar = this.carRepository.save(car);
+            this.emailService.sendEmailWithAttachments("gemasclashes@gmail.com", "Car API", "Hello world", image.getBytes());
+            return ResponseEntity.ok(this.carMapper.toDto(updatedCar));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-//    public ResponseEntity<CarDto> uploadCarImageById(MultipartFile image, Long carId) {
-//        try {
-//            Optional<CarEntity> carEntity = this.carRepository.findById(carId);
-//            CarEntity instantCarEntity = carEntity.get();
-//
-//            if (carEntity.isEmpty()) throw new RuntimeException("The car was not found!");
-//            carEntity.get().setImage(image.getBytes());
-//
-//
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
 }
