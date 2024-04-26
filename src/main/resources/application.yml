@@ -1,8 +1,8 @@
 spring:
-  datasource:
-    url: "jdbc:postgresql://localhost:5432/demo"
-    username: "postgres"
-    password: "postgres"
-  jpa:
-    hibernate:
-      ddl-auto: create
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: mydatabase
+      username: root
+      password: rootroot
