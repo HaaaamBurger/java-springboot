@@ -1,13 +1,13 @@
 package com.example.springboot.entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@Getter
-@Setter
+@Data
 @Document("CARS")
 public class CarEntity {
     @MongoId
