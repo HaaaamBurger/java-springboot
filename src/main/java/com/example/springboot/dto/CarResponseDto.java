@@ -1,10 +1,14 @@
 package com.example.springboot.dto;
 
-import com.example.springboot.entity.CarEntity;
 import lombok.Builder;
+import org.springframework.http.HttpStatus;
+
+import java.text.SimpleDateFormat;
 
 @Builder
 public class CarResponseDto {
+    private SimpleDateFormat timestamp;
     private String description;
-    private CarEntity response;
+    private HttpStatus status;
+    private CarDto body;
 }

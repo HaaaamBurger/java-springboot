@@ -9,7 +9,7 @@ import org.bson.types.ObjectId;
 @Builder
 @ToString
 public class CarDto {
-    private ObjectId id;
+    private String id;
 
     private String model;
 

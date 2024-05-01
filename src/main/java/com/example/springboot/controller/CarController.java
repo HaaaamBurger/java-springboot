@@ -16,7 +16,7 @@ public class CarController  {
     private final CarService carService;
 
     @PostMapping("/cars")
-    public ResponseEntity<CarEntity> saveCar(@RequestBody CarDto carDto) {
+    public ResponseEntity<CarResponseDto> saveCar(@RequestBody CarDto carDto) {
         return this.carService.saveCar(carDto);
     }
 
