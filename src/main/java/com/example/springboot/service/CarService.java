@@ -8,12 +8,13 @@ import com.example.springboot.mapper.CarMapper;
 import com.example.springboot.repository.CarRepository;
 import lombok.RequiredArgsConstructor;
 
+import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,20 +23,43 @@ public class CarService implements ICarService {
     private final CarMapper carMapper;
 
     @Override
-    public ResponseEntity<CarResponseDto> saveCar(CarDto carDto) {
+    public ResponseEntity<CarDto> saveCar(CarDto carDto) {
         CarEntity transformedCar = this.carMapper.fromDto(carDto);
         CarEntity savedCar = this.carRepository.save(transformedCar);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .body(this.carMapper.toDto(savedCar));
+    }
+
+    @Override
+    public ResponseEntity<List<CarDto>> getAllCars() {
+        List<CarEntity> cars = this.carRepository.findAll();
+        return ResponseEntity
+                .ok()
                 .body(
-                        CarResponseDto
-                                .builder()
-                                .timestamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
-                                .description("New car %s created!".formatted(carDto.getProducer()))
-                                .status(HttpStatus.CREATED)
-                                .body(this.carMapper.toDto(savedCar))
-                                .build()
+                     cars.stream().map(this.carMapper::toDto).toList()
                 );
     }
+
+    @Override
+    public ResponseEntity<CarDto> getCarById(ObjectId id) {
+        return ResponseEntity
+                .ok()
+                .body(this.carMapper.toDto(this.carRepository.findById(id).orElseThrow()));
+    }
+
+    @Override
+    public ResponseEntity<CarDto> deleteCar(ObjectId id) {
+        CarEntity car = this.carRepository.findById(id).orElseThrow();
+        this.carRepository.delete(car);
+        return ResponseEntity.ok()
+                .body(this.carMapper.toDto(car));
+    }
+
+    @Override
+    public ResponseEntity<CarDto> updateCar(CarDto carDto) {
+        return null;
+    }
+
 }

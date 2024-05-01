@@ -1,5 +1,5 @@
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://haaaamburger:kunleM2004@spring-cluster.ofkmaaw.mongodb.net/
+      uri: mongodb+srv://haaaamburger:kunleM2004@spring-db.tdbr3ei.mongodb.net/
       database: "cars"
