@@ -2,6 +2,7 @@ package com.example.springboot.interfaces;
 
 import com.example.springboot.dto.CarDto;
 import com.example.springboot.dto.CarResponseDto;
+import com.example.springboot.entity.CarEntity;
 import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
 
@@ -11,6 +12,6 @@ public interface ICarService {
     ResponseEntity<CarDto> saveCar(CarDto carDto);
     ResponseEntity<List<CarDto>> getAllCars();
     ResponseEntity<CarDto> getCarById(ObjectId id);
-    ResponseEntity<CarDto> updateCar(CarDto carDto);
+    ResponseEntity<CarDto> updateCar(CarDto carDto, ObjectId id);
     ResponseEntity<CarDto> deleteCar(ObjectId id);
 }

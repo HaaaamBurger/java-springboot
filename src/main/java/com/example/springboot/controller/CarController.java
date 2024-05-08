@@ -31,6 +31,12 @@ public class CarController  {
         return this.carService.getCarById(id);
     }
     @DeleteMapping("/cars/{id}")
-    public ResponseEntity<CarDto> deleteCar(@PathVariable ObjectId id) {}
+    public ResponseEntity<CarDto> deleteCar(@PathVariable ObjectId id) {
+        return this.carService.deleteCar(id);
+    }
+    @PutMapping("/cars/{id}")
+    public ResponseEntity<CarDto> updateCar(@PathVariable ObjectId id, @RequestBody CarDto carDto) {
+        return this.carService.updateCar(carDto, id);
+    }
 
 }

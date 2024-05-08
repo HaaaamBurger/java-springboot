@@ -24,8 +24,7 @@ public class CarService implements ICarService {
 
     @Override
     public ResponseEntity<CarDto> saveCar(CarDto carDto) {
-        CarEntity transformedCar = this.carMapper.fromDto(carDto);
-        CarEntity savedCar = this.carRepository.save(transformedCar);
+        CarEntity savedCar = this.carRepository.save(this.carMapper.fromDto(carDto));
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -53,13 +52,30 @@ public class CarService implements ICarService {
     public ResponseEntity<CarDto> deleteCar(ObjectId id) {
         CarEntity car = this.carRepository.findById(id).orElseThrow();
         this.carRepository.delete(car);
-        return ResponseEntity.ok()
+        return ResponseEntity
+                .ok()
                 .body(this.carMapper.toDto(car));
     }
 
     @Override
-    public ResponseEntity<CarDto> updateCar(CarDto carDto) {
-        return null;
+    public ResponseEntity<CarDto> updateCar(CarDto carDto, ObjectId id) {
+        CarEntity findCarEntity = this.carRepository.findById(id).orElseThrow();
+        if (!carDto.getModel().isEmpty()) {
+            findCarEntity.setModel(carDto.getModel());
+        }
+        if (carDto.getPower() != null) {
+            findCarEntity.setPower(carDto.getPower());
+        }
+        if (!carDto.getProducer().isEmpty()) {
+            findCarEntity.setProducer(carDto.getProducer());
+        }
+
+        this.carRepository.save(findCarEntity);
+
+        return ResponseEntity
+                .ok()
+                .body(this.carMapper.toDto(findCarEntity));
+
     }
 
 }
